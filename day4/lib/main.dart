@@ -36,16 +36,31 @@ class Day4 extends StatelessWidget {
           width: 200,
           decoration: BoxDecoration(
             color: Colors.red,
-            border: Border(
-              top: BorderSide(
-                color: Colors.green,
-                width: 5,
-              ),
-            ),
-            // border: Border.all(
-            //   color: Colors.green,
-            //   width: 5,
+            // border: Border(
+            //   top: BorderSide(
+            //     color: Colors.green,
+            //     width: 5,
+            //   ),
             // ),
+            border: Border.all(
+              color: Colors.green,
+              width: 5,
+            ),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                offset: Offset(10, 20),
+                blurRadius: 14,
+                color: Colors.grey,
+                spreadRadius: 20,
+              ),
+              BoxShadow(
+                offset: Offset(40, 40),
+                blurRadius: 14,
+                color: Colors.yellow,
+                spreadRadius: 20,
+              ),
+            ],
           ),
         ),
       ),
