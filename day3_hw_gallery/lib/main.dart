@@ -25,16 +25,7 @@ class GalleryPage extends StatelessWidget {
         scrollDirection: Axis.vertical,
         child: Column(
           children: [
-            ImageRow(),
-            ImageRow(),
-            ImageRow(),
-            ImageRow(),
-            ImageRow(),
-            ImageRow(),
-            ImageRow(),
-            ImageRow(),
-            ImageRow(),
-            ImageRow(),
+            for (int i = 0; i < 10; i++) ImageRow(),
           ],
         ),
       ),
