@@ -59,6 +59,32 @@ class StackDetails extends StatelessWidget {
                   ),
                 ),
               ),
+              Container(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  "Hari",
+                  style: TextStyle(
+                    backgroundColor: Colors.brown,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  "Ram",
+                  style: TextStyle(
+                    backgroundColor: Colors.brown,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              Positioned(
+                  top: 60,
+                  left: 60,
+                  height: 40,
+                  child: Image.network(
+                      "https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg")),
             ],
           ),
         ),
