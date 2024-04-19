@@ -26,6 +26,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
             Wrap(
+              alignment: WrapAlignment.spaceEvenly,
               children: [
                 for (int i = 1; i <= 10; i++)
                   NumberTile(

@@ -11,13 +11,14 @@ class SecondPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(this.tableNumber.toString()),
+        title: Text("Table of $tableNumber"),
       ),
       body: Center(
           child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text("Hello From Second Page"),
+          for (int i = 1; i <= 10; i++)
+            Text("$tableNumber * $i = ${tableNumber * i}"),
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop();
