@@ -21,7 +21,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int noOfBalls = 30;
   double circleSize = 40;
-  bool isBGGreen = true;
+  bool isBGGreen = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
                       height: circleSize,
                       width: circleSize,
                       decoration: BoxDecoration(
-                        color: Colors.green,
+                        color: isBGGreen ? Colors.green : null,
                         border: Border.all(width: 2, color: Colors.black),
                         borderRadius: BorderRadius.circular(circleSize / 2),
                       ),
@@ -228,7 +228,13 @@ class _HomePageState extends State<HomePage> {
                   "BG Color Green:",
                   style: TextStyle(fontSize: 18),
                 ),
-                Switch(value: false, onChanged: (f) {}),
+                Switch(
+                    value: isBGGreen,
+                    onChanged: (changeVakoSwitchKoValue) {
+                      setState(() {
+                        isBGGreen = changeVakoSwitchKoValue;
+                      });
+                    }),
               ],
             ),
           ),
