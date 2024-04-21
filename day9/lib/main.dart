@@ -20,7 +20,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int noOfBalls = 30;
-  double circleSize = 50;
+  double circleSize = 40;
   bool isBGGreen = true;
   @override
   Widget build(BuildContext context) {
@@ -39,12 +39,12 @@ class _HomePageState extends State<HomePage> {
                   for (int i = 0; i < noOfBalls; i++)
                     Container(
                       margin: EdgeInsets.all(8),
-                      height: 40,
-                      width: 40,
+                      height: circleSize,
+                      width: circleSize,
                       decoration: BoxDecoration(
                         color: Colors.green,
                         border: Border.all(width: 2, color: Colors.black),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(circleSize / 2),
                       ),
                     ),
                 ],
@@ -64,7 +64,13 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     InkWell(
                       onTap: () {
-                        print("Athio");
+                        if (circleSize == 30) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Min is 30.")));
+                          return;
+                        }
+                        circleSize = circleSize - 10;
+                        setState(() {});
                       },
                       child: Container(
                         height: 40,
@@ -91,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       child: Center(
                         child: Text(
-                          "5",
+                          circleSize.toString(),
                           style: TextStyle(
                             fontSize: 20,
                           ),
@@ -100,7 +106,13 @@ class _HomePageState extends State<HomePage> {
                     ),
                     InkWell(
                       onTap: () {
-                        print("Plus athio");
+                        if (circleSize == 300) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Max is 300.")));
+                          return;
+                        }
+                        circleSize = circleSize + 10;
+                        setState(() {});
                       },
                       child: Container(
                         height: 40,
@@ -134,8 +146,11 @@ class _HomePageState extends State<HomePage> {
                     InkWell(
                       onTap: () {
                         if (noOfBalls == 0) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("Cannot reduce more than 0")));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Cannot reduce more than 0"),
+                            ),
+                          );
                           return;
                         }
                         noOfBalls = noOfBalls - 1;
@@ -175,7 +190,16 @@ class _HomePageState extends State<HomePage> {
                     ),
                     InkWell(
                       onTap: () {
-                        print("Plus athio");
+                        if (noOfBalls == 100) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Cannot increase more than 100"),
+                            ),
+                          );
+                          return;
+                        }
+                        noOfBalls = noOfBalls + 1;
+                        setState(() {});
                       },
                       child: Container(
                         height: 40,
