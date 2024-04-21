@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
 
+import "custom_circle.dart";
+
 void main() {
   runApp(
     MaterialApp(
@@ -37,16 +39,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: WrapCrossAlignment.start,
                 children: [
                   for (int i = 0; i < noOfBalls; i++)
-                    Container(
-                      margin: EdgeInsets.all(8),
-                      height: circleSize,
-                      width: circleSize,
-                      decoration: BoxDecoration(
-                        color: isBGGreen ? Colors.green : null,
-                        border: Border.all(width: 2, color: Colors.black),
-                        borderRadius: BorderRadius.circular(circleSize / 2),
-                      ),
-                    ),
+                    CustomCircle(circleSize: circleSize, isBGGreen: isBGGreen),
                 ],
               ),
             ),
