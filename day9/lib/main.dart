@@ -3,16 +3,25 @@ import "package:flutter/material.dart";
 void main() {
   runApp(
     MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: HomePage(),
     ),
   );
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({
     super.key,
   });
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int noOfBalls = 30;
+  double circleSize = 50;
+  bool isBGGreen = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +36,7 @@ class HomePage extends StatelessWidget {
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 crossAxisAlignment: WrapCrossAlignment.start,
                 children: [
-                  for (int i = 0; i < 200; i++)
+                  for (int i = 0; i < noOfBalls; i++)
                     Container(
                       margin: EdgeInsets.all(8),
                       height: 40,
@@ -124,7 +133,13 @@ class HomePage extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        print("Athio");
+                        if (noOfBalls == 0) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("Cannot reduce more than 0")));
+                          return;
+                        }
+                        noOfBalls = noOfBalls - 1;
+                        setState(() {});
                       },
                       child: Container(
                         height: 40,
@@ -151,7 +166,7 @@ class HomePage extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          "5",
+                          noOfBalls.toString(),
                           style: TextStyle(
                             fontSize: 20,
                           ),
