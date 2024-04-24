@@ -3,10 +3,18 @@ import 'dart:math';
 import 'package:day11/people.dart';
 import 'package:flutter/material.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  Function(String) onGenderChange;
   Map<String, dynamic> personDetails;
-  ProfilePage({super.key, required this.personDetails});
+  ProfilePage(
+      {super.key, required this.personDetails, required this.onGenderChange});
 
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  late String gender = widget.personDetails['gender'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,13 +40,13 @@ class ProfilePage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(100),
                         image: DecorationImage(
                             image: NetworkImage(
-                                "${personDetails['image_url']}?jpttext=${Random().nextInt(200)}"))),
+                                "${widget.personDetails['image_url']}"))),
                   ),
                   SizedBox(
                     height: 15,
                   ),
                   Text(
-                    personDetails['name'],
+                    widget.personDetails['name'],
                     style: TextStyle(
                       fontSize: 25,
                     ),
@@ -50,7 +58,7 @@ class ProfilePage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 15),
             child: Text(
-              personDetails['bio'],
+              widget.personDetails['bio'],
               textAlign: TextAlign.center,
             ),
           ),
@@ -62,8 +70,24 @@ class ProfilePage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("${personDetails['age']} Years old"),
-                Text(personDetails['gender']),
+                Text("${widget.personDetails['age']} Years old"),
+                Row(
+                  children: [
+                    Switch(
+                      onChanged: (changeVakoValue) {
+                        if (changeVakoValue == true) {
+                          gender = 'male';
+                        } else {
+                          gender = 'female';
+                        }
+                        setState(() {});
+                        widget.onGenderChange(gender);
+                      },
+                      value: gender == "male" ? true : false,
+                    ),
+                    Text(gender),
+                  ],
+                ),
               ],
             ),
           ),
