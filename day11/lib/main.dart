@@ -22,29 +22,29 @@ class PeopleList extends StatelessWidget {
       body: ListView.builder(
           itemCount: people.length,
           itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => ProfilePage(personIndex: index),
-                  ),
-                );
-              },
-              child: Container(
-                margin: EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                    border: Border.all(
-                  width: 1,
-                )),
-                child: ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(people[index]['name']),
-                  subtitle: Text("${people[index]['age']} years old."),
-                  leading: Image.network(
-                      "${people[index]['image_url']}?jpttext=${Random().nextInt(200)}"),
+            return Container(
+              margin: EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 6,
+              ),
+              decoration: BoxDecoration(
+                  border: Border.all(
+                width: 1,
+              )),
+              child: ListTile(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          ProfilePage(personDetails: people[index]),
+                    ),
+                  );
+                },
+                contentPadding: EdgeInsets.zero,
+                title: Text(people[index]['name']),
+                subtitle: Text("${people[index]['age']} years old."),
+                leading: Image.network(
+                  "${people[index]['image_url']}?jpttext=${Random().nextInt(200)}",
                 ),
               ),
             );

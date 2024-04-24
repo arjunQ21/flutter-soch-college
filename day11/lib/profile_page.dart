@@ -4,8 +4,8 @@ import 'package:day11/people.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {
-  int personIndex;
-  ProfilePage({super.key, required this.personIndex});
+  Map<String, dynamic> personDetails;
+  ProfilePage({super.key, required this.personDetails});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,6 @@ class ProfilePage extends StatelessWidget {
               Column(
                 children: [
                   Container(
-                    alignment: Alignment.center,
                     height: 140,
                     width: 140,
                     decoration: BoxDecoration(
@@ -33,13 +32,13 @@ class ProfilePage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(100),
                         image: DecorationImage(
                             image: NetworkImage(
-                                "${people[personIndex]['image_url']}?jpttext=${Random().nextInt(200)}"))),
+                                "${personDetails['image_url']}?jpttext=${Random().nextInt(200)}"))),
                   ),
                   SizedBox(
                     height: 15,
                   ),
                   Text(
-                    people[personIndex]['name'],
+                    personDetails['name'],
                     style: TextStyle(
                       fontSize: 25,
                     ),
@@ -51,7 +50,7 @@ class ProfilePage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 15),
             child: Text(
-              people[personIndex]['bio'],
+              personDetails['bio'],
               textAlign: TextAlign.center,
             ),
           ),
@@ -63,8 +62,8 @@ class ProfilePage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("${people[personIndex]['age']} Years old"),
-                Text(people[personIndex]['gender']),
+                Text("${personDetails['age']} Years old"),
+                Text(personDetails['gender']),
               ],
             ),
           ),
