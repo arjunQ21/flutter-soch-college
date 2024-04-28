@@ -1,6 +1,5 @@
-int noOfAnimals = 0;
-
 class Animal {
+  static int noOfAnimals = 0;
   String name;
   int legs;
   Animal({required this.name, required this.legs}) {
@@ -19,10 +18,12 @@ void main() {
   Animal cat = Animal(legs: 4, name: "cat");
   Animal snake = Animal(legs: 0, name: "snake");
   Animal parrot = Animal(legs: 2, name: "parrot");
-  print("$noOfAnimals animals have been created and they say: ");
+  print("${Animal.noOfAnimals} animals have been created and they say: ");
   cow.show();
   dog.show();
   cat.show();
   snake.show();
   parrot.show();
+
+  // parrot.noOfAnimals;
 }
