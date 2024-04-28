@@ -1,29 +1,28 @@
 class Animal {
-  static int noOfAnimals = 0;
+  static List<Animal> createdAnimals = [];
   String name;
   int legs;
   Animal({required this.name, required this.legs}) {
-    noOfAnimals++;
-    // print("New Animal Created");
+    createdAnimals.add(this);
   }
 
   void show() {
     print("I am a $name and I have $legs legs.");
   }
+
+  static void showDetails() {
+    print(
+        "${Animal.createdAnimals.length} animals have been created and they say: ");
+    for (int i = 0; i < Animal.createdAnimals.length; i++)
+      Animal.createdAnimals[i].show();
+  }
 }
 
 void main() {
-  Animal cow = Animal(legs: 4, name: "Cow");
-  Animal dog = Animal(legs: 4, name: "dog");
-  Animal cat = Animal(legs: 4, name: "cat");
-  Animal snake = Animal(legs: 0, name: "snake");
-  Animal parrot = Animal(legs: 2, name: "parrot");
-  print("${Animal.noOfAnimals} animals have been created and they say: ");
-  cow.show();
-  dog.show();
-  cat.show();
-  snake.show();
-  parrot.show();
-
-  // parrot.noOfAnimals;
+  Animal(legs: 4, name: "Cow");
+  Animal(legs: 4, name: "dog");
+  Animal(legs: 4, name: "cat");
+  Animal(legs: 0, name: "snake");
+  Animal(legs: 2, name: "parrot");
+  Animal.showDetails();
 }
