@@ -10,7 +10,10 @@ Future<void> waitFor(int seconds) async {
 }
 
 void main() async {
-  sayHi();
-  await waitFor(4);
-  sayHi();
+  // sayHi();
+  for (int i = 0; i < 10; i++) {
+    print("${i + 1} seconds");
+    await waitFor(1);
+  }
+  // sayHi();
 }
