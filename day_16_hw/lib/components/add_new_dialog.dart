@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AddNewDialog extends StatelessWidget {
+  final Function(String?) onNewAdded;
   AddNewDialog({
     super.key,
+    required this.onNewAdded,
   });
 
   final TextEditingController textEditingController = TextEditingController();
@@ -18,6 +20,7 @@ class AddNewDialog extends StatelessWidget {
       actions: [
         IconButton(
             onPressed: () {
+              onNewAdded(null);
               Navigator.of(context).pop();
             },
             icon: Icon(
@@ -31,6 +34,8 @@ class AddNewDialog extends StatelessWidget {
                     SnackBar(content: Text("Enter something first")));
                 return;
               }
+              onNewAdded(textEditingController.text);
+              Navigator.of(context).pop();
             },
             icon: Icon(
               Icons.check,
