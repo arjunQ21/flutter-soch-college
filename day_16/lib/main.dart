@@ -27,14 +27,36 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    SharedPreferences.getInstance().then((value) async {
-      sharedPreferences = value;
-      int? storedTopOffset = sharedPreferences.getInt("topOffset");
-      if (storedTopOffset != null) {
-        topOffset = storedTopOffset;
-        setState(() {});
-      }
-    });
+    initSavedSettings();
+    // callback style
+    //   SharedPreferences.getInstance().then((value) async {
+    //     sharedPreferences = value;
+    //     readBorderRadius();
+    //     int? storedTopOffset = sharedPreferences.getInt("topOffset");
+    //     if (storedTopOffset != null) {
+    //       topOffset = storedTopOffset;
+    //       setState(() {});
+    //     }
+    //   });
+  }
+
+  void initSavedSettings() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    int? storedTopOffset = sharedPreferences.getInt("topOffset");
+    if (storedTopOffset != null) {
+      topOffset = storedTopOffset;
+      setState(() {});
+    }
+    readBorderRadius();
+  }
+
+
+  void readBorderRadius() {
+    bool? readBorderRadius = sharedPreferences.getBool("hasBorderRadius");
+    if (readBorderRadius != null) {
+      hasBorderRadius = readBorderRadius;
+      setState(() {});
+    }
   }
 
   void updateOffset({bool toIncrement = true}) {
@@ -72,6 +94,8 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.green,
+                    borderRadius:
+                        hasBorderRadius ? BorderRadius.circular(100) : null,
                   ),
                   child: Text(
                     "HI",
@@ -129,10 +153,12 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text("Border Radius:"),
                           IconButton(
-                            onPressed: () {
+                            onPressed: () async {
                               setState(() {
                                 hasBorderRadius = !hasBorderRadius;
                               });
+                              await sharedPreferences.setBool(
+                                  "hasBorderRadius", hasBorderRadius);
                             },
                             icon: Icon(
                               hasBorderRadius
