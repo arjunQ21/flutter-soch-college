@@ -2,15 +2,23 @@
 
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
 Color pColor = Colors.blue;
 
-class ChatHome extends StatelessWidget {
+class ChatHome extends StatefulWidget {
   const ChatHome({super.key});
 
+  @override
+  State<ChatHome> createState() => _ChatHomeState();
+}
+
+class _ChatHomeState extends State<ChatHome> {
+  TextEditingController textEditingController = TextEditingController();
+  bool _isSendingRequest = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,6 +87,7 @@ class ChatHome extends StatelessWidget {
                   height: 60,
                   width: MediaQuery.of(context).size.width * 0.75,
                   child: TextField(
+                    controller: textEditingController,
                     decoration: InputDecoration(
                       hintText: "Enter message here...",
                       filled: true,
@@ -94,11 +103,34 @@ class ChatHome extends StatelessWidget {
                   width: 10,
                 ),
                 IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.send,
-                    color: pColor,
-                  ),
+                  onPressed: () async {
+                    setState(() {
+                      _isSendingRequest = true;
+                    });
+                    var response = await http.post(
+                        Uri.parse(
+                            "https://ca0f-43-245-85-244.ngrok-free.app/messages"),
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: jsonEncode(
+                            {"message": textEditingController.text}));
+                    textEditingController.clear();
+                    var decodedResponse = jsonDecode(response.body);
+                    if (decodedResponse['status'] != 'success') {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(decodedResponse['data']['message'])));
+                    }
+                    setState(() {
+                      _isSendingRequest = false;
+                    });
+                  },
+                  icon: !_isSendingRequest
+                      ? Icon(
+                          Icons.send,
+                          color: pColor,
+                        )
+                      : CupertinoActivityIndicator(),
                 )
               ],
             )
@@ -115,28 +147,36 @@ class MsgContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      height: 50,
-      width: MediaQuery.of(context).size.width * .3,
-      decoration: BoxDecoration(
-        color: Colors.blue.shade900,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Align(
+    return Row(
+      children: [
+        Expanded(
+          child: Container(),
+        ),
+        Container(
           alignment: Alignment.centerRight,
-          child: Text(
-            textAlign: TextAlign.end,
-            msg,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.white,
+          margin: EdgeInsets.symmetric(vertical: 10),
+          // height: 50,
+          // width: MediaQuery.of(context).size.width * .3,
+          decoration: BoxDecoration(
+            color: Colors.blue.shade900,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                textAlign: TextAlign.end,
+                msg,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 }
