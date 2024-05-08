@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 void main() {
   runApp(const MyApp());
@@ -64,6 +65,11 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     textEditingController.text = "https://jsonplaceholder.typicode.com/posts";
     super.initState();
+  }
+
+// you can use this also in futurebuilder
+  Future<Response> getData() {
+    return http.get(Uri.parse(textEditingController.text));
   }
 
   @override
@@ -200,8 +206,8 @@ class _MyHomePageState extends State<MyHomePage> {
               child: textEditingController.text.isNotEmpty
                   ? SingleChildScrollView(
                       child: FutureBuilder(
-                          future:
-                              http.get(Uri.parse(textEditingController.text)),
+                          future: getData(),
+                          // http.get(Uri.parse(textEditingController.text)),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               var response = snapshot.data!;
