@@ -1,0 +1,16 @@
+Messaging API:
+
+Read Messages
+GET /messages
+
+Add new Message
+POST /messages
+    body: {"message": "message to send"}
+
+Edit Message
+PUT /messages/<message_id>
+    body: {"message": "edited message"}
+
+Delete Message
+DELETE /messages/<message_id>
+    
