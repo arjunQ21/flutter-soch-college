@@ -40,31 +40,25 @@ class _MsgContainerState extends State<MsgContainer> {
             deleteDialog(context);
           },
           child: Container(
+            width: MediaQuery.of(context).size.width * 0.8,
             alignment: Alignment.centerRight,
             margin: EdgeInsets.symmetric(vertical: 10),
-            // height: 50,
-            // width: MediaQuery.of(context).size.width * .6,
-            decoration: BoxDecoration(
-              color: pColor,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Column(
-                  children: [
-                    Text(
-                      widget.msg['message'],
-                      softWrap: true,
-                      maxLines: 5,
-                      textAlign: TextAlign.end,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
+            child: Container(
+              decoration: BoxDecoration(
+                color: pColor,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                  widget.msg['message'],
+                  softWrap: true,
+                  maxLines: 5,
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
