@@ -1,8 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
+import 'dart:convert';
+
+import 'package:chat_app/pages/view_page/chat_msg.dart';
 import 'package:chat_app/resources/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import "package:http/http.dart" as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CheckSender extends StatefulWidget {
   const CheckSender({super.key});
@@ -16,6 +21,14 @@ class _CheckSenderState extends State<CheckSender> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   bool isLoading = false;
+
+  Future<void> savePersonInfo(String name, int id) async {
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setString("sender_name", name);
+    await prefs.setInt("sender_id", id);
+    print("$name and $id saved to local storage");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +56,6 @@ class _CheckSenderState extends State<CheckSender> {
                   height: 10,
                 ),
                 Container(
-                  height: 50,
                   width: MediaQuery.of(context).size.width * .8,
                   child: TextFormField(
                     validator: (inputText) {
@@ -54,6 +66,7 @@ class _CheckSenderState extends State<CheckSender> {
                       }
                       return null;
                     },
+                    controller: nameController,
                     cursorColor: pColor,
                     decoration: InputDecoration(
                       focusColor: pColor,
@@ -71,6 +84,42 @@ class _CheckSenderState extends State<CheckSender> {
                   onPressed: !isLoading
                       ? () async {
                           if (formKey.currentState!.validate()) {
+                            try {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              var response = await http.post(
+                                Uri.parse("$apiURL/peoples/new"),
+                                headers: {"Content-Type": "application/json"},
+                                body: jsonEncode(
+                                  {"name": nameController.text},
+                                ),
+                              );
+                              if (response.statusCode == 200) {
+                                print(response.body);
+                                var decoded = jsonDecode(response.body);
+                                await savePersonInfo(
+                                    decoded['data']['person']['name'],
+                                    decoded['data']['person']['id']);
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatMsg(
+                                      senderId: decoded['data']['person']['id'],
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                throw Exception(
+                                    "Invalid response: ${response.body}");
+                              }
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Error: $e")));
+                            } finally {
+                              setState(() {
+                                isLoading = false;
+                              });
+                            }
                           } else {
                             print("Invalid data");
                           }

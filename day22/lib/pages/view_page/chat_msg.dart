@@ -10,7 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ChatMsg extends StatefulWidget {
-  const ChatMsg({super.key});
+  final int senderId;
+  const ChatMsg({super.key, required this.senderId});
 
   @override
   State<ChatMsg> createState() => _ChatMsgState();
