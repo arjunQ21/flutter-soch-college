@@ -101,7 +101,7 @@ class _CheckSenderState extends State<CheckSender> {
                                 await savePersonInfo(
                                     decoded['data']['person']['name'],
                                     decoded['data']['person']['id']);
-                                Navigator.of(context).push(
+                                Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
                                     builder: (context) => ChatMsg(
                                       senderId: decoded['data']['person']['id'],

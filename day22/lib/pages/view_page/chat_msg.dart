@@ -20,6 +20,20 @@ class ChatMsg extends StatefulWidget {
 class _ChatMsgState extends State<ChatMsg> {
   TextEditingController textEditingController = TextEditingController();
   bool isLoading = false;
+
+  Future<void> fetchMessage() async {
+    await Future.delayed(Duration(seconds: 2), () async {
+      setState(() {});
+      await fetchMessage();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchMessage();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,6 +133,7 @@ class _ChatMsgState extends State<ChatMsg> {
                             children: messages
                                 .map(
                                   (e) => MsgContainer(
+                                    myId: widget.senderId,
                                     msg: e,
                                     onMessageDeletedOrEdited: () {
                                       setState(() {});
@@ -170,8 +185,10 @@ class _ChatMsgState extends State<ChatMsg> {
                           var response = await http.post(
                             Uri.parse('$apiURL/messages'),
                             headers: {"Content-Type": "application/json"},
-                            body: jsonEncode(
-                                {"message": textEditingController.text}),
+                            body: jsonEncode({
+                              "message": textEditingController.text,
+                              "sentBy": widget.senderId,
+                            }),
                           );
                           textEditingController.clear();
                           var decodedResponse = jsonDecode(response.body);
