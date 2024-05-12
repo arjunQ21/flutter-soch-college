@@ -8,6 +8,21 @@ class CounterProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void multiplyByTen() {
+    count *= 10;
+    notifyListeners();
+  }
+
+  void divideByTen() {
+    count = count ~/ 10;
+    notifyListeners();
+  }
+
+  void minus() {
+    count--;
+    notifyListeners();
+  }
+
   CounterProvider() {
     print("Provider called once.");
   }

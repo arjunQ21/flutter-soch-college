@@ -20,6 +20,7 @@ class CounterDisplay extends StatelessWidget {
               style: TextStyle(
                 fontSize: 27,
                 fontWeight: FontWeight.bold,
+                color: Color(cProvider.count),
               ),
             );
           }),

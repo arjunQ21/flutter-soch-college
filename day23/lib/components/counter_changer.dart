@@ -9,15 +9,62 @@ class CounterChanger extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () {
-        CounterProvider prov = Provider.of<CounterProvider>(
-          context,
-          listen: true,
-        );
-        prov.addCount();
-      },
-      child: Icon(Icons.add),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              CounterProvider prov = Provider.of<CounterProvider>(
+                context,
+                listen: false,
+              );
+              prov.addCount();
+            },
+            child: Icon(Icons.add),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              CounterProvider prov = Provider.of<CounterProvider>(
+                context,
+                listen: false,
+              );
+              prov.minus();
+            },
+            child: Icon(Icons.remove),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              CounterProvider prov = Provider.of<CounterProvider>(
+                context,
+                listen: false,
+              );
+              prov.multiplyByTen();
+            },
+            child: Row(
+              children: [
+                Icon(Icons.close),
+                Text("10"),
+              ],
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              CounterProvider prov = Provider.of<CounterProvider>(
+                context,
+                listen: false,
+              );
+              prov.divideByTen();
+            },
+            child: Row(
+              children: [
+                Text("/10"),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'package:day23/providers/counter_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'components/counter_changer.dart';
 import 'components/counter_display.dart';
 
@@ -25,7 +24,7 @@ class CounterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CounterDisplay(),
-      floatingActionButton: CounterChanger(),
+      bottomNavigationBar: CounterChanger(),
     );
   }
 }
