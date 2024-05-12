@@ -1,8 +1,5 @@
-import 'package:chat_app/pages/chat_home.dart';
 import 'package:chat_app/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
-
-import 'pages/check_sender.dart';
 
 void main() {
   runApp(const MyApp());
