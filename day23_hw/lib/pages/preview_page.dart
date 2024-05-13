@@ -39,31 +39,40 @@ class _PreviewPageState extends State<PreviewPage> {
           ),
         ],
       ),
-      body: Center(
-        child: Consumer<SettingsProvider>(
-            builder: (context, settingsProvider, child) {
-          return Container(
-            height: settingsProvider.currentSettings.boxHeight,
-            width: settingsProvider.currentSettings.boxWidth,
-            decoration: BoxDecoration(
-              border: Border.all(
-                  width: settingsProvider.currentSettings.borderWidth),
-              color: settingsProvider.currentSettings.boxColor,
-              borderRadius: BorderRadius.circular(
-                  settingsProvider.currentSettings.borderRadius),
-            ),
-            child: Center(
-              child: Text(
-                settingsProvider.currentSettings.textToShow,
-                style: TextStyle(
-                  color: settingsProvider.currentSettings.textColor,
-                  fontSize: settingsProvider.currentSettings.fontSize,
-                  fontWeight: FontWeight.bold,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Image.asset("assets/images/image.jpg"),
+          // Image(
+          //   image: AssetImage("assets/images/image.jpg"),
+          // ),
+          Center(
+            child: Consumer<SettingsProvider>(
+                builder: (context, settingsProvider, child) {
+              return Container(
+                height: settingsProvider.currentSettings.boxHeight,
+                width: settingsProvider.currentSettings.boxWidth,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      width: settingsProvider.currentSettings.borderWidth),
+                  color: settingsProvider.currentSettings.boxColor,
+                  borderRadius: BorderRadius.circular(
+                      settingsProvider.currentSettings.borderRadius),
                 ),
-              ),
-            ),
-          );
-        }),
+                child: Center(
+                  child: Text(
+                    settingsProvider.currentSettings.textToShow,
+                    style: TextStyle(
+                      color: settingsProvider.currentSettings.textColor,
+                      fontSize: settingsProvider.currentSettings.fontSize,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              );
+            }),
+          ),
+        ],
       ),
     );
   }
