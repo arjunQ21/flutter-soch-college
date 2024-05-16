@@ -1,7 +1,6 @@
 import 'package:day24/pages/home_page.dart';
 import 'package:day24/providers/people_provider.dart';
 import 'package:day24/providers/settings_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,13 +18,15 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => PeopleProvider()),
         ChangeNotifierProvider(create: (context) => SettingsProvider()),
       ],
-      child: MaterialApp(
-        theme: ThemeData(
-          fontFamily: "Roboto",
-        ),
-        debugShowCheckedModeBanner: false,
-        home: HomePage(),
-      ),
+      child: Consumer<SettingsProvider>(builder: (context, value, child) {
+        return MaterialApp(
+          theme: ThemeData(
+            fontFamily: value.dropdownValue,
+          ),
+          debugShowCheckedModeBanner: false,
+          home: HomePage(),
+        );
+      }),
     );
   }
 }

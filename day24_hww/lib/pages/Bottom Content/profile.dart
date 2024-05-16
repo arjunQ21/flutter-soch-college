@@ -6,6 +6,7 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Profile build");
     return Column(
       children: [
         Align(

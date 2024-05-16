@@ -1,7 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
+
+import 'dart:convert';
+
 import 'package:day24/providers/people_provider.dart';
+import 'package:day24/providers/settings_provider.dart';
 import 'package:day24/resources/constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
@@ -20,49 +26,41 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    print("Home build");
-    return Column(
-      children: [
-        Align(
-          alignment: Alignment.center,
-          child: Container(
-            height: 60,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              color: pColor,
-            ),
-            child: Center(
-              child: Text(
-                "Peoples",
-                style: TextStyle(
-                  fontSize: 23,
-                  color: sColor,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
+    var prov = Provider.of<SettingsProvider>(context, listen: false);
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: prov.selectedColor,
+        foregroundColor: Colors.white,
+        title: Text(
+          "Peoples",
+          style: TextStyle(
+            fontSize: prov.fontSize + 4,
+            fontWeight: FontWeight.w600,
           ),
         ),
-        SizedBox(
-          height: 20,
-        ),
-        Expanded(
-          child: Consumer<PeopleProvider>(
-            builder: (context, value, child) {
-              return value.peopleList.isEmpty
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : ListView.builder(
+        centerTitle: true,
+      ),
+      body: Consumer<PeopleProvider>(
+        builder: (context, value, child) {
+          return value.peopleList.isEmpty
+              ? Center(
+                  child: CircularProgressIndicator(
+                    color: prov.selectedColor,
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: ListView.builder(
                       itemCount: value.peopleList.length,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20.0, vertical: 5),
+                          padding: const EdgeInsets.symmetric(vertical: 5.0),
                           child: Card(
+                            color: Color.fromARGB(255, 248, 246, 246),
                             child: ListTile(
                               contentPadding: EdgeInsets.all(12),
                               leading: Checkbox(
+                                activeColor: prov.selectedColor,
                                 onChanged: (v) {
                                   value.setSelectedId(v == false
                                       ? null
@@ -74,20 +72,22 @@ class _HomeState extends State<Home> {
                               title: Text(
                                 value.peopleList[index]['name'],
                                 style: TextStyle(
-                                  fontSize: 19,
+                                  fontSize: prov.fontSize,
+                                  color: prov.selectedColor,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
                               subtitle: Text(
-                                  value.peopleList[index]["address"]["city"]),
+                                value.peopleList[index]["address"]["city"],
+                                style: TextStyle(color: prov.selectedColorSec),
+                              ),
                             ),
                           ),
                         );
-                      });
-            },
-          ),
-        ),
-      ],
+                      }),
+                );
+        },
+      ),
     );
   }
 }

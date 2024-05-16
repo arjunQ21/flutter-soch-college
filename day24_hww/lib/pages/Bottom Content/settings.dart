@@ -10,6 +10,7 @@ class Settings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Settings build");
     return Column(
       children: [
         Align(
