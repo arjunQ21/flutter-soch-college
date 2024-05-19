@@ -50,8 +50,12 @@ if (config.env === 'production') {
   app.use('/auth', authLimiter);
 }
 
+// static files
+app.use("/uploads", express.static("src/uploads"))
+
 // v1 api routes
 app.use('/', routes);
+
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
