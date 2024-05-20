@@ -8,10 +8,11 @@ const multer = require('multer');
 const ApiError = require('../utils/ApiError');
 const httpStatus = require('http-status');
 const router = express.Router();
+const path = require("path")
 
 const upload = multer({storage: multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'src/uploads/memes/')
+      cb(null, 'src'+path.sep+'uploads'+path.sep+'memes'+path.sep)
     },
     filename: function (req, file, cb) {
       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
