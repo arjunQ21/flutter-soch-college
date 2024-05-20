@@ -21,7 +21,14 @@ const upload = multer({storage: multer.diskStorage({
 
 
 router.get("/", auth(), catchAsync(async function(req, res){
-    return res.send(await Meme.find({})) ;
+    // return res.send(Meme.find({})
+    // .then((memes)=>{
+    //   return Promise.all(memes.map((m ) => m.formatted(req)))
+    // }))
+    const memes = await Meme.find({})
+    const formatted = await Promise.all(memes.map(m => m.formatted(req)))
+    // console.log(formatted)
+    return res.send(formatted)
 }))
 
 router.post("/", auth(), upload.single("image"), catchAsync(async function(req, res){

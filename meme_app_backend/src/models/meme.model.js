@@ -14,7 +14,16 @@ const memeSchema = mongoose.Schema({
 }, {timestamps: true}) ;
 
 
-// memeSchema.methods.formatted = async function
+memeSchema.methods.formatted = async function(req){
+    this.populate("uploadedBy") ;
+    const populated = JSON.parse(JSON.stringify(await this.execPopulate())) ;
+    let paths = this.filePath.split("/") ;
+    paths.shift() ;
+    return {
+        ...populated, 
+        filePath: (req.secure ? "https://" : "http://") + req.headers.host + "/" + paths.join("/")
+    }
+}
 
 
 const Meme = mongoose.model(
