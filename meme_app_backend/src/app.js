@@ -13,6 +13,7 @@ const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
+const path = require('path');
 
 const app = express();
 
@@ -51,7 +52,7 @@ if (config.env === 'production') {
 }
 
 // static files
-app.use("/uploads", express.static("src/uploads"))
+app.use("/uploads", express.static("src"+ path.sep +"uploads"))
 
 // v1 api routes
 app.use('/', routes);

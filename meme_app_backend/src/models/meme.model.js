@@ -1,4 +1,5 @@
 const mongoose = require("mongoose") ;
+const path = require("path");
 
 const memeSchema = mongoose.Schema({
     caption: String,
@@ -17,7 +18,7 @@ const memeSchema = mongoose.Schema({
 memeSchema.methods.formatted = async function(req){
     this.populate("uploadedBy") ;
     const populated = JSON.parse(JSON.stringify(await this.execPopulate())) ;
-    let paths = this.filePath.split("/") ;
+    let paths = this.filePath.split(path.sep) ;
     paths.shift() ;
     return {
         ...populated, 
