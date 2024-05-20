@@ -49,7 +49,7 @@ const meme = await Meme.create({
 
 
 
-return res.status(201).send({meme}) ;
+return res.status(201).send({meme: await meme.formatted(req)}) ;
 
 }))
 
