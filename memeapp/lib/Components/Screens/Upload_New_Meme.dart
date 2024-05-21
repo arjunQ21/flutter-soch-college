@@ -1,9 +1,14 @@
 import 'dart:io';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:memeapp/Providers/MemeProvider.dart';
+import 'package:memeapp/Resources/Resources.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:mime/mime.dart';
+import 'package:provider/provider.dart';
 
-import '../../Resources/Resources.dart';
 // import 'package:memeapp/Resources/Resources.dart';
 
 class Upload_New_Meme extends StatefulWidget {
@@ -17,6 +22,9 @@ class _Upload_New_MemeState extends State<Upload_New_Meme> {
   final ImagePicker picker = ImagePicker();
 
   XFile? pickedImage;
+  TextEditingController captionController = TextEditingController();
+
+  bool isSendingRequest = false;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +72,7 @@ class _Upload_New_MemeState extends State<Upload_New_Meme> {
               Text('Caption the Meme'),
               SizedBox(height: 10),
               TextField(
+                controller: captionController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderSide: BorderSide(width: 2),
@@ -110,12 +119,13 @@ class _Upload_New_MemeState extends State<Upload_New_Meme> {
                                           Icon(Icons.close, color: Colors.red)),
                                   SizedBox(width: 20),
                                   InkWell(
-                                      onTap: () async {
-                                        pickedImage = await picker.pickImage(
-                                            source: ImageSource.gallery);
-                                        setState(() {});
-                                      },
-                                      child: Text('Choose Another'))
+                                    onTap: () async {
+                                      pickedImage = await picker.pickImage(
+                                          source: ImageSource.gallery);
+                                      setState(() {});
+                                    },
+                                    child: Text('Choose Another'),
+                                  ),
                                 ],
                               ),
                             ),
@@ -163,10 +173,72 @@ class _Upload_New_MemeState extends State<Upload_New_Meme> {
             width: MediaQuery.of(context).size.width,
             color: pickedImage == null ? Colors.grey : Colors.black,
             child: TextButton(
-              onPressed: pickedImage == null ? null : () {},
-              child: Text(
-                'POST THIS MEME',
-                style: TextStyle(color: Colors.white, fontSize: 20),
+              onPressed: pickedImage == null
+                  ? null
+                  : () async {
+                      try {
+                        setState(() {
+                          isSendingRequest = true;
+                        });
+                        String enteredCaption = captionController.text;
+                        // creating headers
+                        Map<String, String> headers = {
+                          "Authorization": "Bearer ${MemeProvider.header}"
+                        };
+                        // creating request
+                        var request = http.MultipartRequest(
+                          "POST",
+                          Uri.parse("$myIP/memes"),
+                        );
+                        // setting headers
+                        request.headers.addAll(headers);
+                        // putting caption in request
+                        request.fields.addAll({'caption': enteredCaption});
+                        // putting file in request
+                        request.files.add(
+                          await http.MultipartFile.fromPath(
+                            "image",
+                            pickedImage!.path,
+                            // we need to send mime type of file also.
+                            contentType: MediaType.parse(
+                              lookupMimeType(pickedImage!.path)!,
+                            ),
+                          ),
+                        );
+
+                        var res = await request.send();
+                        final resBody = await res.stream.bytesToString();
+                        print(resBody);
+                        if (res.statusCode == 201) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("Meme Uploaded Successfully")));
+                          Navigator.of(context).pop();
+                          Provider.of<MemeProvider>(context, listen: false)
+                              .getMemes();
+                        } else {
+                          throw Exception(resBody);
+                        }
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(e.toString())));
+                      } finally {
+                        setState(() {
+                          isSendingRequest = false;
+                        });
+                      }
+                    },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'POST THIS MEME',
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                  if (isSendingRequest)
+                    CupertinoActivityIndicator(
+                      color: Colors.white,
+                    )
+                ],
               ),
             ),
           ),
