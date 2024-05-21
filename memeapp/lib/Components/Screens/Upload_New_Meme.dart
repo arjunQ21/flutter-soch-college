@@ -1,8 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../Resources/Resources.dart';
 // import 'package:memeapp/Resources/Resources.dart';
 
-class Upload_New_Meme extends StatelessWidget {
-  const Upload_New_Meme({super.key});
+class Upload_New_Meme extends StatefulWidget {
+  Upload_New_Meme({super.key});
+
+  @override
+  State<Upload_New_Meme> createState() => _Upload_New_MemeState();
+}
+
+class _Upload_New_MemeState extends State<Upload_New_Meme> {
+  final ImagePicker picker = ImagePicker();
+
+  XFile? pickedImage;
 
   @override
   Widget build(BuildContext context) {
@@ -21,66 +35,125 @@ class Upload_New_Meme extends StatelessWidget {
         ),
         actions: [
           Container(
-              margin: EdgeInsets.only(right: 20),
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                  color: Colors.black, borderRadius: BorderRadius.circular(20)),
-              child: IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.person,
-                    color: Colors.white,
-                  ))),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Post a new meme',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            Text('Caption the Meme'),
-            SizedBox(height: 10),
-            TextField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 2),
-                      borderRadius: BorderRadius.circular(10)),
-
-                  // hintText: "Helloo ji",
-                  label: Text('description', style: TextStyle(fontSize: 16))),
-            ),
-            SizedBox(height: 20),
-            Text('Upload meme: '),
-            SizedBox(height: 10),
-            Center(
-              child: Container(
-                alignment: Alignment.center,
-                height: MediaQuery.of(context).size.height * 0.2,
-                width: MediaQuery.of(context).size.width * 0.7,
-                decoration:
-                    BoxDecoration(border: Border.all(style: BorderStyle.solid)),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                          onPressed: () {},
-                          icon:
-                              Icon(Icons.save_as, size: 40, color: Colors.blue))
-                    ],
-                  ),
-                ),
+            margin: EdgeInsets.only(right: 20),
+            height: 40,
+            width: 40,
+            decoration: BoxDecoration(
+                color: Colors.black, borderRadius: BorderRadius.circular(20)),
+            child: IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.person,
+                color: Colors.white,
               ),
             ),
-            SizedBox(height: 20),
-          ],
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Post a new meme',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 20),
+              Text('Caption the Meme'),
+              SizedBox(height: 10),
+              TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(width: 2),
+                        borderRadius: BorderRadius.circular(10)),
+                    label: Text('description', style: TextStyle(fontSize: 16))),
+              ),
+              SizedBox(height: 20),
+              Text('Upload meme: '),
+              SizedBox(height: 10),
+              Center(
+                child: pickedImage != null
+                    ? Column(
+                        children: [
+                          Container(
+                            alignment: Alignment.center,
+                            child: Image.file(
+                              File(pickedImage!.path),
+                            ),
+                            // child: Image.network(
+                            //   memeImg1,
+                            //   height: 300,
+                            //   fit: BoxFit.cover,
+                            // ),
+                          ),
+                          SizedBox(height: 20),
+                          Container(
+                            width: 200,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                // mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  InkWell(
+                                      onTap: () {
+                                        pickedImage = null;
+                                        setState(() {});
+                                      },
+                                      child:
+                                          Icon(Icons.close, color: Colors.red)),
+                                  SizedBox(width: 20),
+                                  InkWell(
+                                      onTap: () async {
+                                        pickedImage = await picker.pickImage(
+                                            source: ImageSource.gallery);
+                                        setState(() {});
+                                      },
+                                      child: Text('Choose Another'))
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    : InkWell(
+                        onTap: () async {
+                          pickedImage = await picker.pickImage(
+                            source: ImageSource.gallery,
+                          );
+                          setState(() {});
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: MediaQuery.of(context).size.height * 0.2,
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          decoration: BoxDecoration(
+                              border: Border.all(style: BorderStyle.solid)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.save_as,
+                                  size: 40,
+                                  color: Colors.blue,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+              ),
+              SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Row(
@@ -88,14 +161,15 @@ class Upload_New_Meme extends StatelessWidget {
           Container(
             height: 50,
             width: MediaQuery.of(context).size.width,
-            color: Colors.grey,
+            color: pickedImage == null ? Colors.grey : Colors.black,
             child: TextButton(
-                onPressed: () {},
-                child: Text(
-                  'POST THIS MEME',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                )),
-          )
+              onPressed: pickedImage == null ? null : () {},
+              child: Text(
+                'POST THIS MEME',
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ),
+          ),
         ],
       ),
     );
