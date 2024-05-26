@@ -72,7 +72,7 @@ class _SignUp_PageState extends State<SignUp_Page> {
         child: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          color: Colors.yellow,
+          color: Colors.yellow.shade600,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

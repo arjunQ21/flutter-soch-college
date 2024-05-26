@@ -19,6 +19,7 @@ class Authprovider with ChangeNotifier {
     header = H;
     print('ThE HEADER IS $header');
     MemeProvider.setHeader(header);
+    // notifyListeners();
   }
 
   Future<Map<String, dynamic>?> getUserFromSavedToken() async {
@@ -27,10 +28,12 @@ class Authprovider with ChangeNotifier {
     if (savedToken == null) return null;
     if (savedToken.isEmpty) return null;
     setHeader(savedToken);
+    // notifyListeners();
     var response = await http.get(Uri.parse('$myIP/users/me'),
         headers: {'Authorization': 'Bearer $savedToken'});
-    print(response.body);
+    print('Response body from auth: ${response.body}');
     if (response.statusCode == 200) {
+      print("THE BODY IS LLLL ${response.body}");
       user = (jsonDecode(response.body) as Map<String, dynamic>);
       notifyListeners();
       return user;
@@ -50,16 +53,12 @@ class Authprovider with ChangeNotifier {
     }
   }
 
-  // void getToken() async {
-  //   try {
-  //     var prefs = await SharedPreferences.getInstance();
-  //     header = await prefs.getString('headers') ?? '';
-  //     print("TOKEN GETTED IS: $header");
-  //     if (header.isNotEmpty) {
-  //       getUser();
-  //     }
-  //   } catch (e) {
-  //     print('ERROR FROM GET TOKEN $e');
-  //   }
+  // void UpdateName() async {
+  //   var response = await http.get(
+  //     Uri.parse("$myIP/users/me"),
+  //     headers: {
+  //       'Authorization': "Bearer $header",
+  //     },
+  //   );
   // }
 }

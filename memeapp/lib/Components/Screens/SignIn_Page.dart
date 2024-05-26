@@ -32,8 +32,8 @@ class _SignIn_PageState extends State<SignIn_Page> {
               'email': emailController.text,
               'password': passwordController.text,
             }));
-        print('Status code is ${response.statusCode}');
-        print('Body is ${response.body}');
+        // print('Status code is ${response.statusCode}');
+        // print('Body is ${response.body}');
         if (response.statusCode == 200) {
           var decodedInfo =
               jsonDecode(response.body)['tokens']['access']['token'];
@@ -43,12 +43,16 @@ class _SignIn_PageState extends State<SignIn_Page> {
           aprov.setHeader(decodedInfo);
           aprov.saveToken();
 
-          print("the token is $decodedInfo");
+          // print("the token is $decodedInfo");
 
-          print(
-              '${emailController.text} is email ${passwordController.text} is password');
+          // print(
+          //     '${emailController.text} is email ${passwordController.text} is password');
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (c) => Home_Page()));
+        } else if (response.statusCode == 401) {
+          var decoded = jsonDecode(response.body)['message'];
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(decoded)));
         }
       } catch (e) {
         print('Error: $e');
@@ -78,7 +82,7 @@ class _SignIn_PageState extends State<SignIn_Page> {
         child: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          color: Colors.yellow,
+          color: Colors.yellow.shade600,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -110,14 +114,6 @@ class _SignIn_PageState extends State<SignIn_Page> {
                             controller: passwordController,
                             obscureText: true,
                             validator: (value) {
-                              // if (value!.isEmpty) {
-                              //   return 'please enter a password';
-                              // }
-                              // RegExp passExp = RegExp(
-                              //     r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$');
-                              // if (!passExp.hasMatch(value)) {
-                              //   return 'must contains at least 8 chars 1 digit 1 letter';
-                              // }
                               return null;
                             },
                             decoration: InputDecoration(

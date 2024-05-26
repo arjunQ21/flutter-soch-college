@@ -5,7 +5,6 @@ import 'package:memeapp/Components/Screens/SignUp_Page.dart';
 import 'package:memeapp/Pages/Home_Page.dart';
 import 'package:memeapp/Providers/AuthProvider.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // import 'package:memeapp/Resources/Resources.dart';
 
@@ -30,20 +29,20 @@ class _Splash_ScreenState extends State<Splash_Screen> {
         child: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          color: Colors.yellow,
+          color: Colors.yellow.shade600,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Image.asset(
-                'lib/Resources/images/splash-screen-logo.png',
-                height: 150,
-                width: 250,
+                'lib/Resources/images/memantic_logo.png',
+                height: 200,
+                width: 300,
               ),
               SizedBox(height: 80),
               LoadingAnimationWidget.hexagonDots(color: Colors.black, size: 50),
               SizedBox(height: 200),
               Text(
-                'MemeFlow version 1.0.0',
+                'Memantic version 1.0.0',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 50),
@@ -52,12 +51,6 @@ class _Splash_ScreenState extends State<Splash_Screen> {
         ),
       ),
     );
-  }
-
-  void Time() async {
-    await Future.delayed(Duration(seconds: 5));
-    Navigator.of(context)
-        .pushReplacement(CupertinoPageRoute(builder: (c) => SignUp_Page()));
   }
 
   void checkToken() async {

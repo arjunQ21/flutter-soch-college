@@ -6,4 +6,4 @@ var memeImg =
 var memeImg1 =
     'https://imgs.search.brave.com/y-Jdg_lpGMu8Q0ow3joZXERqs0wvZ-DkDN0FBbWKFtQ/rs:fit:860:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJzLmNvbS9p/bWFnZXMvZmVhdHVy/ZWQvZnVubnktbWVt/ZXMtcGljdHVyZS1y/emVtbjg2NDJ3c3Qw/Y2t3LmpwZw';
 
-var myIP = 'http://10.32.17.9:3000';
+var myIP = 'https://memes-backend.padxu.com';
