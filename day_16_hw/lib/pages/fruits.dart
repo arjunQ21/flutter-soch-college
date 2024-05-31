@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:convert';
 
 import 'package:day_16_hw/helpers/functions.dart';
@@ -60,7 +62,13 @@ class _FruitsPageState extends State<FruitsPage> {
                 builder: (context) => AddNewDialog(
                   onNewAdded: (a) {
                     if (a != null && a.isNotEmpty) {
-                      fruits.add({"qty": 1, "name": a, "id": giveMeNewId()});
+                      fruits.add(
+                        {
+                          "qty": 1,
+                          "name": a,
+                          "id": giveMeNewId(),
+                        },
+                      );
                     }
                     setState(() {});
                     saveFruitsToLocalStorage();
